@@ -1,11 +1,5 @@
 {
   "name": "zanphp/connection-pool",
-  "repositories": {
-    "packagist": {
-      "type": "composer",
-      "url": "http://packagist.qima-inc.com"
-    }
-  },
   "require": {
     "php": ">=5.6",
     "zanphp/container": "dev-master",
@@ -13,7 +7,7 @@
     "zanphp/contracts": "dev-master",
     "zanphp/exception": "dev-master",
     "zanphp/dns-client": "dev-master",
-    "zanphp/database": "dev-master",
+    "zanphp/database": "dev-laogui",
     "zanphp/timer": "dev-master",
     "zanphp/support": "dev-master"
   },
