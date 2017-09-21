@@ -2,7 +2,7 @@
   "name": "zanphp/connection-pool",
   "require": {
     "php": ">=5.6",
-    "zanphp/container": "dev-master",
+    "zanphp/container": "dev-laogui",
     "zanphp/coroutine": "dev-laogui",
     "zanphp/contracts": "dev-master",
     "zanphp/exception": "dev-master",
