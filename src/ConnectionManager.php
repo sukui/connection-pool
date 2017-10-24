@@ -39,8 +39,9 @@ class ConnectionManager implements ConnectionManagerContract
 
     /**
      * @param string $connKey
-     * @return \Zan\Framework\Contract\Network\Connection
-     * @throws InvalidArgumentException | CanNotCreateConnectionException | ConnectTimeoutException
+     * @param bool $wait
+     * @return \ZanPHP\Contracts\ConnectionPool\Connection
+     * @throws ZanException | InvalidArgumentException | CanNotCreateConnectionException | ConnectTimeoutException
      */
     public function get($connKey, $wait = true)
     {
@@ -76,11 +77,7 @@ class ConnectionManager implements ConnectionManagerContract
 
         $connection = (yield $pool->get());
 
-        if ($connection instanceof Connection) {
-            yield $connection;
-        } else {
-            yield new FutureConnection($this, $connKey, $conf["connect_timeout"], $pool);
-        }
+        yield $connection;
     }
 
     private function getFromPoolEx($connKey)
