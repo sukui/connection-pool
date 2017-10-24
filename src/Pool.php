@@ -29,11 +29,11 @@ class Pool implements ConnectionPool
 
     public $waitNum = 0;
 
-    public function __construct(ConnectionFactory $connectionFactory, array $config, $type)
+    public function __construct(ConnectionFactory $connectionFactory, array $config)
     {
         $this->poolConfig = $config;
         $this->factory = $connectionFactory;
-        $this->type = $type;
+        $this->type = $connectionFactory->getFactoryType();
         $this->init();
     }
 
@@ -122,26 +122,20 @@ class Pool implements ConnectionPool
     {
     }
 
-    public function get($connection = null)
+    public function get()
     {
         if ($this->freeConnection->isEmpty()) {
             $this->createConnect();
         }
 
-        if (null == $connection) {
-            $connection = $this->freeConnection->pop();
-            if (null != $connection) {
-                $this->activeConnection->push($connection);
-            }
-
-        } else {
-            $this->freeConnection->remove($connection);
+        $connection = $this->freeConnection->pop();
+        if (null != $connection) {
             $this->activeConnection->push($connection);
-        }
-        if (null === $connection) {
-            yield null;
+        } else {
+            yield new FutureConnection($this->poolConfig['pool']['pool_name'], $this->poolConfig["connect_timeout"], $this);
             return;
         }
+
         $connection->setUnReleased();
         $connection->lastUsedTime = Time::current(true);
         yield $connection;
